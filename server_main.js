@@ -29,25 +29,16 @@ app.get('/',(req,res) => {
     res.send('Server started')
 })
 
+// Handle login
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    
-    // Step 1: Check if the username exists
-    const sqlUserCheck = 'SELECT * FROM users WHERE username = ?';
-    db.query(sqlUserCheck, [username], (err, results) => {
+    const sql = 'SELECT * FROM users WHERE username = ? AND password = ?';
+    db.query(sql, [username, password], (err, results) => {
         if (err) throw err;
-
-        if (results.length === 0) {
-            // If the username does not exist
-            res.json({ success: false, message: 'Username not found' });
+        if (results.length > 0) {
+            res.json({ success: true });
         } else {
-            // Step 2: If username exists, check if the password matches
-            const user = results[0];
-            if (user.password === password) {
-                res.json({ success: true });
-            } else {
-                res.json({ success: false, message: 'Invalid password' });
-            }
+            res.json({ success: false, message: 'Invalid credentials' });
         }
     });
 });
