@@ -16,7 +16,7 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
     .then(data => {
         if (data.success) {
             alert('Signup successful');
-            window.location.href = '/login';
+            window.location.href = '/login.html';
         } else {
             alert('Signup failed: ' + data.message);
         }
